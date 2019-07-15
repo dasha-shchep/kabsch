@@ -6,14 +6,12 @@
 # Darya Shchepanovska
 # 15th July 2019
 
-a = [1,3]
-b = [2,4]
+using DataFrames
+using CSV
 
-parse_xyz(input_filename) = readdlm(input_filename)
-
-file = parse_xyz('test_geometries/hpaldA.xyz')
-println(file)
-
+function read_xyz(input_xyz)
+    return CSV.read(input_xyz,ignoreemptylines=true)
+end
 
 function translate_to_centroid(coordinate_matrix)
     return coordinate_matrix
