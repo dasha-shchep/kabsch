@@ -18,9 +18,11 @@ function xyz2matrix(input_xyz)
     return matrix
 end
 
-function translate_to_centroid(coordinate_matrix)
-    centriod = [mean(coordinate_matrix[:,1]),mean(coordinate_matrix[:,2]),mean(coordinate_matrix[:,3])]
-    return centriod
+function translate_to_centroid(coord_matrix)
+    center = [mean(coord_matrix[:,1]);mean(coord_matrix[:,2]);mean(coord_matrix[:,3])]
+    centroid = transpose(center)
+    translated_geom = broadcast(-,coord_matrix,centroid)
+    return translated_geom
 end
 
 function cross_covariance_matrix(Pmatrix,Qmatrix)
@@ -29,10 +31,18 @@ function cross_covariance_matrix(Pmatrix,Qmatrix)
 end
 
 function optimal_rotation_matrix(CCmatrix)
+    ORmatrix = sqrt(transpose(CCmatrix)*CCmatrix)*inv(CCmatrix)
     return ORmatrix
 end
 
 Pgeom = xyz2matrix("test_geometries/hpaldA.xyz")
 Qgeom = xyz2matrix("test_geometries/hpaldB.xyz")
 
-println(translate_to_centroid(Qgeom))
+normalisedP = (translate_to_centroid(Pgeom))
+normalisedQ = (translate_to_centroid(Qgeom))
+
+xcov = cross_covariance_matrix(normalisedP,normalisedQ)
+
+orot = optimal_rotation_matrix(xcov)
+
+display(orot)
