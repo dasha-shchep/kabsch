@@ -39,8 +39,8 @@ function optimal_rotation_matrix(CCmatrix)
     return ORmatrix
 end
 
-Pgeom = xyz2matrix("test_geometries/hpaldA.xyz")
-Qgeom = xyz2matrix("test_geometries/hpaldB.xyz")
+Pgeom = xyz2matrix(ARGS[1])
+Qgeom = xyz2matrix(ARGS[2])
 
 normalisedP = (translate_to_centroid(Pgeom))
 normalisedQ = (translate_to_centroid(Qgeom))
