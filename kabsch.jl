@@ -6,17 +6,17 @@
 # Darya Shchepanovska
 # 15th July 2019
 
-using DataFrames
-using CSV
+using DelimitedFiles
 
 using LinearAlgebra
 using Statistics
 
 function xyz2matrix(input_xyz)
     # Imports .xyz file format as data frame, and converts it to an N x 3 Matrix
-    df=CSV.File(input_xyz,datarow=3,header=false,ignorerepeated=true,delim=' ')|>DataFrame
-    matrix=convert(Matrix,df[:,2:4])
-    return matrix
+    raw_xyz=readdlm(input_xyz)
+    natoms=size(raw_xyz)[1]
+    just_coords=Array{Float64}(raw_xyz[2:natoms,2:4])
+    return just_coords
 end
 
 function translate_to_centroid(coord_matrix)
@@ -59,4 +59,6 @@ end
 
 RMSD_value = norm(rotated-normalisedQ)
 
-println("RMSD between these two structures is ", RMSD_value)
+println("RMSD between these two structures is ",RMSD_value)
+
+
